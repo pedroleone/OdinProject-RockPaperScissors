@@ -1,0 +1,8 @@
+div.icons img {
+    width: 100px;
+    height: 100px;
+}
+
+.flipped {
+    transform: scaleX(-1);
+}

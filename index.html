@@ -5,9 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <p>Use the console to play!</p>
+    <h1>Rock Paper Scissors</h1>
+    <section id="options">
+        <div>Choose your play</div>
+        <div class="icons">
+            <button><img src="./assets/rock.svg" data-option="rock"></button>
+            <button><img src="./assets/paper.svg" data-option="paper"></button>
+            <button><img src="./assets/scissors.svg" data-option="scissors"></button>
+        </div>
+    </section>
+    <section id="result">
+        <div>These are your plays:</div>
+    </section>
+    <section id="scoreboard">
+
+    </section>
+    <audio src="./assets/fight.mp3"></audio>
+    <audio src="./assets/youlose.mp3"></audio>
+    <audio src="./assets/youwin.mp3"></audio>
+
     <script src="script.js" defer></script>
 </body>
 </html>
