@@ -5,36 +5,39 @@ function generateRandomNumber() {
 function computerPlay() {
     switch (generateRandomNumber()) {
         case 1:
-            return 'ROCK';
+            return 'rock';
         case 2: 
-            return 'PAPER';
+            return 'paper';
         case 3: 
-            return 'SCISSORS'
+            return 'scissors'
     }
-}
-
-function playerSelection() {
-
 }
 
 let playerWins = 0;
 
 function decideWinner(playerSelection , computerSelection) {
+    let youWin = false;
+
+    
     if (playerSelection == computerSelection) {
         return "That's a tie!"
     }
-    if ((playerSelection == 'ROCK' && computerSelection == 'SCISSORS') ||
-        (playerSelection == 'SCISSORS' && computerSelection == 'PAPER') || 
-        (playerSelection == 'PAPER' && computerSelection == 'ROCK')) {
+    if ((playerSelection == 'rock' && computerSelection == 'scissors') ||
+        (playerSelection == 'scissors' && computerSelection == 'paper') || 
+        (playerSelection == 'paper' && computerSelection == 'rock')) {
             playerWins++;
-            return `You win! ${playerSelection} beats ${computerSelection}`;
-        } else {
-            return `You lose! ${computerSelection} beats ${playerSelection}`;
+            youWin = true;
         }
+    
+    paintResult(playerSelection, computerSelection, playerWins);
 }
 
-for (let i = 0; i < 5; i++) {
-    console.log(decideWinner(playerSelection(), computerPlay()))
+function paintResult(playerSelection, computerSelection, playerWins) {
+    const container = document.querySelector("#result")
+    const playResult = document.createElement("p");
+    const resultString = playerWins ? "You win!" : "You lose!";
+    playResult.innerHTML = `You: <img src="./assets/${playerSelection}.svg"> - Computer: <img src="./assets/${computerSelection}.svg" class="flipped"> - ${resultString}`;
+    container.appendChild(playResult)
 }
 
 console.log(`You won ${playerWins} times`);
@@ -43,7 +46,7 @@ const optionButtons = document.querySelectorAll("div.icons img");
 optionButtons.forEach(e => {
     e.addEventListener('click', function(e) {
         const selection = e.target.getAttribute("data-option")
-        console.log(selection);
+        decideWinner(selection, computerPlay());
     })
 })
 
