@@ -1,56 +1,98 @@
 function generateRandomNumber() {
-    // Math.floor => retorna o maior inteiro menor ou igual ao numero
-    // Math.floor(5.95) => 5
-    // Math.floor(5.05) => 5
-    // Com números negativos fica estranho
-    // Math.floor(-5.05) => 6
-    
-    // Como o Math.random() retorna num numero entre 0 e 1, 
-    // para obter um numero entre 1 e 3 deve-se multiplicar por 3 e em 
-    // seguida somar com 1
     return Math.floor(Math.random() * 3 + 1)
 }
 
 function computerPlay() {
     switch (generateRandomNumber()) {
         case 1:
-            return 'ROCK';
+            return 'rock';
         case 2: 
-            return 'PAPER';
+            return 'paper';
         case 3: 
-            return 'SCISSORS'
-    }
-}
-
-function playerSelection() {
-    while (true) {
-        let choice = prompt("Choose paper, rock or scissors").toUpperCase();
-        if (choice == 'ROCK' || choice == 'PAPER' || choice == 'SCISSORS') {
-            return choice;
-        } else {
-            alert("Please choose a valid choice!");
-        }
+            return 'scissors'
     }
 }
 
 let playerWins = 0;
+let numPlays = 0;
+let computerWins = 0;
 
 function decideWinner(playerSelection , computerSelection) {
+    numPlays++;
+    let result = "You lose!";
+
+    
     if (playerSelection == computerSelection) {
-        return "That's a tie!"
+        result = "That's a tie!"
+    } else {
+        if ((playerSelection == 'rock' && computerSelection == 'scissors') ||
+            (playerSelection == 'scissors' && computerSelection == 'paper') || 
+            (playerSelection == 'paper' && computerSelection == 'rock')) {
+                playerWins++;
+                result = "You won!"
+            } else {
+                computerWins++;
+                result = "You lost!"
+            }
     }
-    if ((playerSelection == 'ROCK' && computerSelection == 'SCISSORS') ||
-        (playerSelection == 'SCISSORS' && computerSelection == 'PAPER') || 
-        (playerSelection == 'PAPER' && computerSelection == 'ROCK')) {
-            playerWins++;
-            return `You win! ${playerSelection} beats ${computerSelection}`;
-        } else {
-            return `You lose! ${computerSelection} beats ${playerSelection}`;
-        }
+    
+    paintResult(playerSelection, computerSelection, result);
 }
 
-for (let i = 0; i < 5; i++) {
-    console.log(decideWinner(playerSelection(), computerPlay()))
+function paintResult(playerSelection, computerSelection, result) {
+    const container = document.querySelector("#result");
+    const playResult = document.createElement("p");
+    playResult.innerHTML = `You: <img src="./assets/${playerSelection}.svg"> - Computer: <img src="./assets/${computerSelection}.svg" class="flipped"> - ${result}`;
+    container.appendChild(playResult);
+    
+}
+
+function endGame() {
+    const annoucement = document.createElement("p");
+    let annoucementeMessage;
+    if (playerWins === computerWins) {
+        annoucementeMessage = "That's a tie! Incredible!"
+    }  
+    if (playerWins > 2) {
+        annoucementeMessage = "You won!"  
+    } else {
+        annoucementeMessage = "You lost!"
+    }
+
+    annoucement.innerHTML = `Game finished! ${annoucementeMessage} Select an option to begin again`;
+
+    const container = document.querySelector("#result");
+    container.appendChild(annoucement);
+
+}
+
+function resetGame() {
+    numPlays = 0;
+    playerWins = 0;
+    computerWins = 0;
+    document.querySelector("#result").innerHTML = "";
+
+
 }
 
 console.log(`You won ${playerWins} times`);
+
+const optionButtons = document.querySelectorAll("div.icons button");
+optionButtons.forEach(e => {
+    e.addEventListener('click', function(e) {
+        if (numPlays == 5 ) {
+            resetGame();
+        }
+        const selection = this.getAttribute("data-option")
+        decideWinner(selection, computerPlay());
+        if (numPlays === 5) {
+            endGame();
+        }
+
+        
+    })
+})
+
+
+
+
